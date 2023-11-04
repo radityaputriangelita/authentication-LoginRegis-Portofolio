@@ -54,7 +54,6 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        // User ::create($request->all());
         $request->validate([
             'name' => 'required|string|max:250',
             'photo' => 'image|nullable|max:1999',
@@ -62,19 +61,18 @@ class UserController extends Controller
 
         $user->name = $request->input('name');
         if ($request->hasFile('photo')) {
+            $photoPath = public_path('photos/original'. $user->photo);
+            if (File::exists($photoPath)) 
+            {
+                File::delete($photoPath);
+            }
             $filenameWithExt = $request->file('photo')->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('photo')->getClientOriginalExtension();
             $filenameSimpan = $filename . '_' . time() . '.' . $extension;
-            $path = $request->file('photo')->storeAs($filenameSimpan);
-            if ($user->photo) {
-                $photoPath = public_path('photos/original/'. $user->photo);
-                if (File::exists($photoPath)) {
-                    File::delete($photoPath);
-                }
-            }
+            $path = $request->file('photo')->storeAs('photo/original',$filenameSimpan);
 
-            $user->photo = $path;
+            $user->photo = $filenameSimpan;
             $user->save();
         } else {
         }
@@ -89,39 +87,28 @@ class UserController extends Controller
     {
     return view('user.resize', compact('user'));}
 
-
     public function resizeImage(Request $request, User $user)
     {
         $this->validate($request, [
             'size' => 'required|in:thumbnail,square',
             'photo' => 'required|string',
         ]);
-
         $size = $request->input('size');
-        $photo = $request->input('photo');
-
-        $originalPath = public_path('storage/photos/original/' . $photo);
-        $resizedPath = public_path('storage/photos/resizedPath'.$photo);
-        $thumbnailPath = public_path('storage/photos/resizePhotos/thumbnail'. $photo); 
-        $squarePath = public_path('storage/photos/resizePhotos/square'. $photo); 
-
-
-        if ($size === 'thumbnail') {
-            // Resize to thumbnail size (160 x 90)
-            // $image = $user->photo::make($originalPath);
-            Image::make($image)->save($originalPath);
-            Image::make($image)
-            ->fit(100, 100)
-            ->save($thumbnailPath);
-        } elseif ($size === 'square') {
-            // Resize to square size (90 x 80)
-            // $image = $user->photo::make($originalPath);
-            $image = Image::make($originalPath);
-            $image->fit(90, 90);
-            $image->save($resizedPath);
+        
+        if (Storage::exists('photo/original/' . $user->photo)) {
+            $originalImagePath = public_path('storage/photo/original/' . $user->photo);
+        
+            if ($size === 'thumbnail') {
+                $resizedImage = Image::make($originalImagePath);
+                $resizedImage->fit(160, 90);
+                $resizedImage->save(public_path('storage/photo/thumbnail/' . $user->photo));
+            } elseif ($size === 'square') {
+                $resizedImage = Image::make($originalImagePath);
+                $resizedImage->fit(100, 100);
+                $resizedImage->save(public_path('storage/photo/square/' . $user->photo));
+            }
         }
-        // Redirect kembali ke halaman user.blade.php
-        return redirect()->route('user.resize')->with('success', 'User photo is resize successfully.');
+        return view('user.resize', compact('user'))->with('success', 'User photo is resized successfully.');
     }
 
 }

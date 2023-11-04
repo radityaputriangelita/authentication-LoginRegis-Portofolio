@@ -16,15 +16,26 @@
         <tr>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
-            <td><img src="{{ asset('storage/'.$user->photo) }}" width="150px"></td>
             <td>
-                <form action="{{ route('users.destroy', $user) }}" method="post">
+            @if ($user->photo)  
+                @if (File::exists(storage_path('app/public/photo/square/' . $user->photo)))
+                    <img src="{{ asset('storage/photo/square/' . $user->photo) }}"></td>
+                @elseif (File::exists(storage_path('app/public/photo/thumbnail/' . $user->photo)))
+                    <img src="{{ asset('storage/photo/thumbnail/' . $user->photo) }}"></td>
+                @else
+                    <img src="{{ asset('storage/photo/original/' . $user->photo) }}"></td>
+                @endif
+            @else 
+                <p>Tidak Ada Photo</p></td>
+            @endif
+            <td>
+                <form action="{{ route('destroy', $user) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm hapus-button" onClick="return confirm('Yakin mau dihapus')">Hapus Photo</button>
                 </form>
-                <a href="{{ route('users.edit', $user) }}" class="btn btn-primary btn-sm edit-button">Edit</a>
-                <a href="{{ route('users.resizeForm', $user) }}" class="btn btn-warning btn-sm resize-button">Resize Photo</a>
+                <a href="{{ route('edit', $user) }}" class="btn btn-primary btn-sm edit-button">Edit</a>
+                <a href="{{ route('resizeForm', $user) }}" class="btn btn-warning btn-sm resize-button">Resize Photo</a>
             </td>
         </tr>
         @endforeach

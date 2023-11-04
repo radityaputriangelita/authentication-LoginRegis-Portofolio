@@ -48,7 +48,7 @@
                         <div class="col-md-6">
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo" value="{{ old('photo') }}">
                             @if ($errors->has('photo'))
-                            <span class="text-danger">{{ $errors->first('photo') }}</span>
+                                <span class="text-danger">{{ $errors->first('photo') }}</span>
                             @endif
                         </div>
                     </div>

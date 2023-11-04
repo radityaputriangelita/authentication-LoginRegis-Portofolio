@@ -41,7 +41,7 @@ class LoginRegisterController extends Controller
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('photo')->getClientOriginalExtension();
             $filenameSimpan = $filename . '_' . time() . '.' . $extension;
-            $path = $request->file('photo')->storeAs('photos/original', $filenameSimpan);
+            $path = $request->file('photo')->storeAs('photo/original',$filenameSimpan);
         }else{
             //tidak ada file yang diupload
         }
@@ -50,7 +50,7 @@ class LoginRegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'photo' => $path
+            'photo' => $filenameSimpan
         ]);
 
         $credentials = $request->only('email', 'password');

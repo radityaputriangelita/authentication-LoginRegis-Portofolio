@@ -30,11 +30,10 @@ Route::controller(LoginRegisterController::class)->group(function() {
 
 Route::get('/users', [UserController::class, 'index'])->name('users');
 
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('destroy');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('edit');
+Route::patch('/users/{user}', [UserController::class, 'update'])->name('update');
 
-// Route::get('/users/{user}/resize', [UserController::class, 'resizeForm'])->name('users.resizeForm');
-Route::get('/users/{user}/resize', [UserController::class, 'resizeForm'])->name('users.resizeForm');
-Route::post('/users/{user}/resize', [UserController::class, 'resizeImage'])->name('users.resizeImage');
+Route::get('/users/{user}/resize', [UserController::class, 'resizeForm'])->name('resizeForm');
+Route::post('/users/{user}/resize', [UserController::class, 'resizeImage'])->name('resizeImage');
    

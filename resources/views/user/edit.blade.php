@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">Edit Profile Photo</div>
             <div class="card-body">
-                <form action="{{ route('users.update', $user) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('update', $user) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="mb-3 row">
