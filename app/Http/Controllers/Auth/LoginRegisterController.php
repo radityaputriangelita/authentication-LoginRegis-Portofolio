@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class LoginRegisterController extends Controller
@@ -27,36 +28,59 @@ class LoginRegisterController extends Controller
     }
 
     //store new user
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed',
-            'photo' =>'image|nullable|max:1999'
+            'photo' => 'image|nullable|max:1999',
         ]);
-
-        if($request->hasFile('photo')){
+    
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'photo' => null, 
+        ]);
+    
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+    
             $filenameWithExt = $request->file('photo')->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('photo')->getClientOriginalExtension();
             $filenameSimpan = $filename . '_' . time() . '.' . $extension;
-            $path = $request->file('photo')->storeAs('photo/original',$filenameSimpan);
-        }else{
-            //tidak ada file yang diupload
+
+            $folderPath = 'storage/photo/';
+            if (!File::isDirectory($folderPath)) {
+                File::makeDirectory($folderPath, 0777, true, true);
+            }
+    
+            $folderPathOriginal = public_path($folderPath . '/original');
+            $folderPathThumbnail = public_path($folderPath . '/thumbnail');
+            $folderPathSquare = public_path($folderPath . '/square');
+    
+            if (!File::isDirectory($folderPathOriginal)) {
+                File::makeDirectory($folderPathOriginal, 0777, true, true);
+            }
+    
+            if (!File::isDirectory($folderPathThumbnail)) {
+                File::makeDirectory($folderPathThumbnail, 0777, true, true);
+            }
+    
+            if (!File::isDirectory($folderPathSquare)) {
+                File::makeDirectory($folderPathSquare, 0777, true, true);
+            }
+            $path = $request->file('photo')->storeAs( 'photo/original', $filenameSimpan);
+            $user->update(['photo' => $filenameSimpan]);
         }
-
-        user::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'photo' => $filenameSimpan
-        ]);
-
+    
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
-        return redirect()->route('dashboard') ->withSuccess('You have successfully registered & logged in');
+        return redirect()->route('dashboard')->withSuccess('You have successfully registered & logged in');
     }
 
     //display login form
