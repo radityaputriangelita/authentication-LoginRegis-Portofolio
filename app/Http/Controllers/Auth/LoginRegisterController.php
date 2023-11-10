@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class LoginRegisterController extends Controller
 {
@@ -72,7 +74,8 @@ class LoginRegisterController extends Controller
     public function dashboard()
     {
         if(Auth::check()){
-            return view('auth.dashboard');
+            $posts = Post::all();
+            return view('auth.dashboard',compact('posts'));
         }
         return redirect()->route('login') ->withErrors([
             'email' => 'Please login to access the dashboard',
@@ -87,10 +90,4 @@ class LoginRegisterController extends Controller
         return redirect()->route('login')
         ->withSuccess('You have logged out successfully');;
     }
-    // public function logout(Request $request){
-    //     Auth::logout();
-    //     $request->session()->invalidate();
-    //     $request->session()->regenerateToken();
-    //     return redirect()->route('login') ->withSuccess('You have logged out successfully');
-    // }
 }

@@ -492,56 +492,45 @@
 
 		</section><!--/.experience-->
 
-  <!-- start section journal -->
-  <div id="portfolios" class="text-left paddsection">
+  <!-- start section portfolios -->
+	<div id="portfolios" class="text-left paddsection">
 
-    <div class="section-heading text-center">
-        <h2>Portfolios</h2>
-    </div>
+		<div class="section-heading text-center">
+			<h2>Portfolios</h2>
+		</div>
+		
+		<a href="{{ route('createPorto') }}" class="btn btn-primary btn-sm edit-button">Tambah</a>
 
-    <div class="container" style="margin-top: 80px;">
-      <div class="portfolio-block">
-        <div class="row">
-          <div class="card-portfolios" style="width: 390px; margin: 10px 20px">
-            <img src="assets/images/portfolio/port1.png" class="card-img-top" alt="...">
-            <div class="card-body" style="margin-top: 10px;">
-              <h5 class="card-title"><a href="https://docs.google.com/presentation/d/1t4WVbyUuPvAnowy5m3ABEtWxxHVTHFc2iyF9sewHEjg/edit?usp=sharing" style="color:black">Study Case Minimum viable product and product ideation. Product Manager</a></h5>
-              <p class="card-text">Determine the effectiveness of adding a add-on package feature on netflix to eliminate the geo-limitation
-                </p>
-            </div>
-          </div>
-          <div class="card-portfolios" style="width: 390px; margin: 10px 20px">
-            <img src="assets/images/portfolio/port4.png" class="card-img-top" alt="...">
-            <div class="card-body" style="margin-top: 10px;">
-              <h5 class="card-title"><a href="https://docs.google.com/presentation/d/1t4WVbyUuPvAnowy5m3ABEtWxxHVTHFc2iyF9sewHEjg/edit?usp=sharing" style="color:black">Study Case MealMingle. Product Manager</a></h5>
-              <p class="card-text">How We Addressing Hunger Issues Through Innovation</p>
-            </div>
-          </div>
-          <div class="card-portfolios" style="width: 390px; margin: 10px 20px">
-            <img src="assets/images/portfolio/port3.png" class="card-img-top" alt="...">
-            <div class="card-body" style="margin-top: 10px;">
-              <h5 class="card-title"><a href="https://www.figma.com/file/7NhhH7EHEHO84nEgjUwu5Z/RUSHRUSH?type=design&node-id=27%3A55&mode=design&t=4y2H5PDdDyfhTU6M-1" style="color:black">Rush Rush. UI/UX</a></h5>
-              <p class="card-text">Collaborate to create a design display for simple games that will be implemented using a GUI</p>
-            </div>
-          </div>
+		<div class="container" style="margin-top: 80px;">
+			<div class="portfolio-block">
+				<div class="row">
+					@foreach ($posts as $post)
+						<div class="card-portfolios" style="width: 390px; margin: 10px 20px">
+							<img src="{{ asset('storage/posts_image/' . $post->picture) }}" class="card-img-top" alt="Portfolio Image">
+							<div class="card-body" style="margin-top: 10px;">
+								<h5 class="card-title"><a href="{{ $post->link }}" style="color: black">{{ $post->title }}</a></h5>
+								<p class="card-text">{{ $post->description }}</p>
+							</div>
+							<form action="{{ route('editPorto', ['id' => $post->id]) }}" method="GET">
+								@csrf
+								<button type="submit" class="btn btn-primary btn-sm edit-button">Edit</button>
+							</form>							
+							<form action="{{ route('deletePorto', $post->id) }}" method="POST">
+								@csrf
+								@method('DELETE') <!-- Menggunakan metode DELETE untuk menghapus data -->
+								<button type="submit" class="btn btn-danger btn-sm">Delete</button>
+							</form>
+							
+						</div>
+						
+					@endforeach
+				</div>
+			</div>
+		</div>
+	</div>
+	
 
-          <div class="card-portfolios" style="width: 390px; margin: 10px 20px">
-            <img src="assets/images/portfolio/port2.png" class="card-img-top" alt="...">
-            <div class="card-body" style="margin-top: 10px;">
-              <h5 class="card-title"><a href="https://www.figma.com/file/m3Wz5BopcAext9L9Dp0Y8p/Tugas-Laprak-7?type=design&node-id=0%3A1&mode=design&t=9MTcE7BzG9hNEINp-1" style="color:black">Angel's Catering. UI/UX</a></h5>
-              <p class="card-text">Create a design for a catering registration before finally implementing it to code </p>
-            </div>
-          </div>
-          <div class="card-portfolios" style="width: 390px; margin: 10px 20px">
-            <img src="assets/images/portfolio/port5.png" class="card-img-top" alt="...">
-            <div class="card-body" style="margin-top: 10px;">
-              <h5 class="card-title"><a href="https://github.com/radityaputriangelita/mtix-ticketing-movie.git" style="color:black">M-Tix Mobile Design. Front-End</a></h5>
-              <p class="card-text">Modify the M-tix mobile design included some of the logic using android studio</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
   </div>
   <!-- End section journal -->
