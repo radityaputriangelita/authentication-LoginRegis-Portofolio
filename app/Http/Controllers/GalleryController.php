@@ -30,40 +30,47 @@ class GalleryController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'picture' => 'image|nullable|max:1999',
-            'link' => 'required|string'
-        ]);
-
-        $filenameSimpan = 'noimage.png'; 
-
-        if ($request->hasFile('picture')) {
-            $filenameWithExt = $request->file('picture')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('picture')->getClientOriginalExtension();
-            $basename = uniqid() . time();
-            $filenameSimpan = "{$basename}.{$extension}";
-
-            $savepath = public_path('storage/posts_image/' . $filenameSimpan);
-
-            $image = Image::make($request->file('picture'))
-                ->fit(160, 100)
-                ->save($savepath);
-        }
-
-        $post = new Post;
-        $post->picture = $filenameSimpan;
-        $post->title = $request->input('title');
-        $post->description = $request->input('description');
-        $post->link = $request->input('link');
-        $post->save();
-
-        return redirect('dashboard')->with('success', 'Berhasil menambahkan data baru');
-    }
+     public function store(Request $request)
+     {
+         $this->validate($request, [
+             'title' => 'required|max:255',
+             'description' => 'required',
+             'picture' => 'image|nullable|max:1999',
+             'link' => 'required|string'
+         ]);
+     
+         // Membuat folder 'posts_image' jika belum ada
+         $folderPath = public_path('storage/posts_image');
+         if (!File::isDirectory($folderPath)) {
+             File::makeDirectory($folderPath, 0777, true, true);
+         }
+     
+         $filenameSimpan = 'noimage.png'; 
+     
+         if ($request->hasFile('picture')) {
+             $filenameWithExt = $request->file('picture')->getClientOriginalName();
+             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+             $extension = $request->file('picture')->getClientOriginalExtension();
+             $basename = uniqid() . time();
+             $filenameSimpan = "{$basename}.{$extension}";
+     
+             $savepath = public_path('storage/posts_image/' . $filenameSimpan);
+     
+             $image = Image::make($request->file('picture'))
+                 ->fit(375, 235)
+                 ->save($savepath);
+         }
+     
+         $post = new Post;
+         $post->picture = $filenameSimpan;
+         $post->title = $request->input('title');
+         $post->description = $request->input('description');
+         $post->link = $request->input('link');
+         $post->save();
+     
+         return redirect('dashboard')->with('success', 'Berhasil menambahkan data baru');
+     }
+     
 
 
 
@@ -113,7 +120,7 @@ class GalleryController extends Controller
             // Simpan gambar baru
             $savepath = public_path('storage/posts_image/' . $filenameSimpan);
             $image = Image::make($request->file('picture'))
-                ->fit(160, 100)
+                ->fit(375, 235)
                 ->save($savepath);
     
             // Hapus gambar lama jika perlu

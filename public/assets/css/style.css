@@ -51,7 +51,6 @@ a,a:hover,a:active,a:focus {
 	display:inline-block;
 	text-decoration:none;
 	color: #6a708e;
-	font-size:16px;
 	padding:0;
 }
 h1,h2,h3,h4,h5,h6 { 
@@ -620,9 +619,14 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
 /*-------------------------------------
         9. Portfolio
 --------------------------------------*/
+
+
 .portfolio {
     padding:  50px 0 100px;
     border:  1px solid #e5ebf2;
+}
+.btn-group-sm>.btn, .btn-sm {
+    --bs-btn-font-size: 1.5rem !important;
 }
 
 .portfolio-content {padding-top: 100px;}

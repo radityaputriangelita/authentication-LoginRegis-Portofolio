@@ -36,6 +36,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="assets/angel.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;subset=devanagari,latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('lightbox2-dev\dist\css\lightbox.min.css') }}">
     <title>Raditya Angelita</title>
 </head>
 <body>
@@ -92,7 +93,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     
     <script src="assets/lib/typed/typed.js"></script>
-    <!-- Template Main Javascript File -->
     <script src="assets/js/main.js"></script>
+    <script src="{{ asset('lightbox2-dev\dist\js\lightbox-plus-jquery.min.js') }}"></script>
 </body>
 </html>

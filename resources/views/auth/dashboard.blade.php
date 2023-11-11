@@ -498,28 +498,37 @@
 		<div class="section-heading text-center">
 			<h2>Portfolios</h2>
 		</div>
+		<div class="d-flex justify-content-end">
+			<form action="{{ route('createPorto') }}" method="GET">
+				@csrf
+				<button type="submit" class="btn btn-primary btn-sm edit-button">Tambah Porto</button>
+			</form>
+		</div>
 		
-		<a href="{{ route('createPorto') }}" class="btn btn-primary btn-sm edit-button">Tambah</a>
-
 		<div class="container" style="margin-top: 80px;">
 			<div class="portfolio-block">
 				<div class="row">
 					@foreach ($posts as $post)
 						<div class="card-portfolios" style="width: 390px; margin: 10px 20px">
-							<img src="{{ asset('storage/posts_image/' . $post->picture) }}" class="card-img-top" alt="Portfolio Image">
+							<a href="{{ asset('storage/posts_image/' . $post->picture) }}" data-lightbox="gallery">
+								<img src="{{ asset('storage/posts_image/' . $post->picture) }}" class="card-img-top" style="width:375px; height:235px" alt="Portfolio Image">
+							</a>							
 							<div class="card-body" style="margin-top: 10px;">
 								<h5 class="card-title"><a href="{{ $post->link }}" style="color: black">{{ $post->title }}</a></h5>
 								<p class="card-text">{{ $post->description }}</p>
 							</div>
-							<form action="{{ route('editPorto', ['id' => $post->id]) }}" method="GET">
-								@csrf
-								<button type="submit" class="btn btn-primary btn-sm edit-button">Edit</button>
-							</form>							
-							<form action="{{ route('deletePorto', $post->id) }}" method="POST">
-								@csrf
-								@method('DELETE') <!-- Menggunakan metode DELETE untuk menghapus data -->
-								<button type="submit" class="btn btn-danger btn-sm">Delete</button>
-							</form>
+							<div class="d-flex justify-content-end">
+								<form action="{{ route('editPorto', ['id' => $post->id]) }}" method="GET" class="m-2">
+									@csrf
+									<button type="submit" class="btn btn-warning btn-sm edit-button">Edit</button>
+									</form>							
+								<form action="{{ route('deletePorto', $post->id) }}" method="POST"class="m-2">
+									@csrf
+									@method('DELETE') 
+									<button type="submit" class="btn btn-danger btn-sm">Delete</button>
+								</form>
+							</div>
+							
 							
 						</div>
 						
