@@ -29,6 +29,7 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/logout', 'logout')->name('logout');
    });
 Route::get('/createporto', [GalleryController::class, 'create'])->name('createPorto');
+Route::get('/pageporto', [GalleryController::class, 'index'])->name('Porto');
 Route::post('/storeporto', [GalleryController::class, 'store'])->name('storePorto');
 Route::get('/editporto/{id}', [GalleryController::class, 'edit'])->name('editPorto');
 Route::patch('/updateporto/{id}', [GalleryController::class, 'update'])->name('updatePorto');

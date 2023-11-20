@@ -65,8 +65,8 @@
                         <a href="#experience" class="nav-link">Experience</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#portfolios" class="nav-link">Portofolios</a>
-                    </li>
+                        <a href="{{ route('ApiGallery') }}" class="nav-link">Portofolios</a>
+                    </li>                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->name }}

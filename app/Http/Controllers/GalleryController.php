@@ -16,7 +16,8 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('auth.gallery', compact('posts'));
     }
 
     /**
@@ -68,7 +69,7 @@ class GalleryController extends Controller
          $post->link = $request->input('link');
          $post->save();
      
-         return redirect('dashboard')->with('success', 'Berhasil menambahkan data baru');
+         return redirect('pageporto')->with('success', 'Berhasil menambahkan data baru');
      }
      
 
@@ -106,7 +107,7 @@ class GalleryController extends Controller
         $post = Post::find($id);
     
         if (!$post) {
-            return redirect()->route('dashboard')->with('error', 'Data not found');
+            return redirect()->route('pageporto')->with('error', 'Data not found');
         }
     
         if ($request->hasFile('picture')) {
@@ -141,7 +142,7 @@ class GalleryController extends Controller
         $post->link = $request->input('link');
         $post->save();
     
-        return redirect('dashboard')->with('success', 'Berhasil memperbarui data');
+        return redirect('pageporto')->with('success', 'Berhasil memperbarui data');
     }
     
 
@@ -160,7 +161,7 @@ class GalleryController extends Controller
         }
         $post->delete();
     
-        return redirect('dashboard')->with('success', 'Berhasil menghapus data');
+        return redirect('pageporto')->with('success', 'Berhasil menghapus data');
     }
     
 }
