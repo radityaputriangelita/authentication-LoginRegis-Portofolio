@@ -11,6 +11,8 @@
 
     <div class="row d-flex justify-content-center">
       <div class="col-lg-8">
+
+
         <h2 class="fw-bold mb-5">Sign up now</h2>
         <form class="regis-form" action="{{ route('store') }}" method="post">
           @csrf
@@ -69,7 +71,7 @@
           </div>
           <!-- href login -->
           <div class="href-login" style="display:flex;">
-            <p style="color: #393f81;">Already have an account?<a href="{{route('login')}}" style="color: #393f81; text-size: 12px">Sign In</a></p>
+            <p style="color: #393f81;">Already have an account?<a href="{{route('login')}}" style="color: #393f81; font-size:12px">Sign In</a></p>
           </div>
 
         </form>

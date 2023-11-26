@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Jobs\SendMailJob;
 
 class LoginRegisterController extends Controller
 {
@@ -40,9 +41,23 @@ class LoginRegisterController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+        // $data = User::updateOrCreate(
+        //     ['name' => $request->name],
+        //     ['email' =>$request->email, 'password' =>Hash::make($request->password)]
+        // );
+        $data = [
+            'name' =>$request->name,
+            'email'=>$request->email,
+            'subject' =>"Regis Sukses Web Raditya Angelita",
+            'body'=>"Anda sudah bergabung pada web milik Raditya Angelita. Sekarang Anda bisa mengakses segala informasi yang disediakan."
+        ];
+
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
+
+        dispatch(new SendMailJob($data));
+        
         return redirect()->route('dashboard') ->withSuccess('You have successfully registered & logged in');
     }
 
